@@ -1,4 +1,4 @@
-# Bulk2space
+# Bulk2Space
 
 ## Spatially resolved single-cell deconvolution of bulk transcriptomes using Bulk2Space 
 
