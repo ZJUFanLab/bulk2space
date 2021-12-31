@@ -66,4 +66,4 @@ Then you will get your results in the `output_data` folder.
 
 For more details, see [user guide]() in the document.
 # About
-Bulk2space manuscript is under major revision. Should you have any questions, please contact Jie Liao at liaojie@zju.edu.cn, Jingyang Qian at qianjingyang@zju.edu.cn, or Yin Fang at fangyin@zju.edu.cn
+Bulk2Space manuscript is under major revision. Should you have any questions, please contact Jie Liao at liaojie@zju.edu.cn, Jingyang Qian at qianjingyang@zju.edu.cn, or Yin Fang at fangyin@zju.edu.cn
