@@ -9,4 +9,4 @@ scipy==1.5.2
 torch @ https://download.pytorch.org/whl/cu110/torch-1.7.0%2Bcu110-cp38-cp38-linux_x86_64.whl
 tqdm==4.50.2
 Unidecode==1.3.0
-
+tensorboard==2.6.0
