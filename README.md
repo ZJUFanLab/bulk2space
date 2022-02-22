@@ -23,12 +23,12 @@ pip install -r requirements.txt
 ## Run the demo data
 If you choose the spatial barcoding-based data(like 10x Genomics or ST) as spatial reference, run the following command:
 ```
-python bulk2space.py --project_name test1 --data_path example_data/demo1 --input_sc_meta_path demo1_sc_meta.csv --input_sc_data_path demo1_sc_data.csv --input_bulk_path demo1_bulk.csv --input_st_data_path demo1_st_data.csv --input_st_meta_path demo1_st_meta.csv --BetaVAE_H --epoch 10 --spot_data True
+python bulk2space.py --project_name test1 --data_path example_data/demo1 --input_sc_meta_path demo1_sc_meta.csv --input_sc_data_path demo1_sc_data.csv --input_bulk_path demo1_bulk.csv --input_st_data_path demo1_st_data.csv --input_st_meta_path demo1_st_meta.csv --BetaVAE_H --epoch 3000 --spot_data True
 ```
 
 else, if you choose the image-based in situ hybridization data(like MERFISH, SeqFISH, and STARmap) as spatial reference, run the following command:
 ```
-python bulk2space.py --project_name test2 --data_path example_data/demo2 --input_sc_meta_path demo2_sc_meta.csv --input_sc_data_path demo2_sc_data.csv --input_bulk_path demo2_bulk.csv --input_st_data_path demo2_st_data.csv --input_st_meta_path demo2_st_meta.csv --BetaVAE_H --epoch 10 --spot_data False
+python bulk2space.py --project_name test2 --data_path example_data/demo2 --input_sc_meta_path demo2_sc_meta.csv --input_sc_data_path demo2_sc_data.csv --input_bulk_path demo2_bulk.csv --input_st_data_path demo2_st_data.csv --input_st_meta_path demo2_st_meta.csv --BetaVAE_H --epoch 3000 --spot_data False
 ```
 
 ## Run your own data
