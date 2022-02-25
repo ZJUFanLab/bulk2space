@@ -51,7 +51,7 @@ When using your own data, make sure
     | ... | ... | ... |
     | Cell_n | Cell_n | Monocyte |
 
-* the `st_meta.csv` file must contain at least two columns of spatial coordinates. Make sure the column names are correct, i.e., `xcoord` and `ycoord`
+* the `st_meta.csv` file must contain at least three columns of spot name and spatial coordinates. Make sure the column names are correct, i.e., `Spot`, `xcoord` and `ycoord`
 
     |  | spot | xcoord | ycoord |
     | ----- | ----- | ----- | ----- |
