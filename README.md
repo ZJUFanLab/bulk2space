@@ -60,7 +60,7 @@ When using your own data, make sure
     | ... | ... | ... |
     | Cell_n / Spot_n | 11.3 | 6.3 |
 
-* the `sc_data.csv` and `st_data.csv` files are gene expression matrices
+* the `sc_data.csv` and `st_data.csv` files are normalized gene expression matrices
 
 Then you will get your results in the `output_data` folder.
 
