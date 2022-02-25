@@ -53,12 +53,12 @@ When using your own data, make sure
 
 * the `st_meta.csv` file must contain at least two columns of spatial coordinates. Make sure the column names are correct, i.e., `xcoord` and `ycoord`
 
-    |  | xcoord | ycoord |
-    | ----- | ----- | ----- |
-    | Cell_1 / Spot_1 | 1.2 | 5.2 |
-    | Cell_2 / Spot_2 | 5.4 | 4.3 |
-    | ... | ... | ... |
-    | Cell_n / Spot_n | 11.3 | 6.3 |
+    |  | spot | xcoord | ycoord |
+    | ----- | ----- | ----- | ----- |
+    | Cell_1 / Spot_1 | Cell_1 / Spot_1 | 1.2 | 5.2 |
+    | Cell_2 / Spot_2 | Cell_1 / Spot_1 |5.4 | 4.3 |
+    | ... | ... | ... | ... |
+    | Cell_n / Spot_n | Cell_1 / Spot_1 | 11.3 | 6.3 |
 
 * the `sc_data.csv` and `st_data.csv` files are normalized gene expression matrices
 
