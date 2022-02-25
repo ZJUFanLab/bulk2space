@@ -53,7 +53,7 @@ When using your own data, make sure
 
 * the `st_meta.csv` file must contain at least three columns of spot name and spatial coordinates. Make sure the column names are correct, i.e., `Spot`, `xcoord` and `ycoord`
 
-    |  | spot | xcoord | ycoord |
+    |  | Spot | xcoord | ycoord |
     | ----- | ----- | ----- | ----- |
     | Cell_1 / Spot_1 | Cell_1 / Spot_1 | 1.2 | 5.2 |
     | Cell_2 / Spot_2 | Cell_1 / Spot_1 |5.4 | 4.3 |
