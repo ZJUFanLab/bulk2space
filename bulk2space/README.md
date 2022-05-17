@@ -217,7 +217,7 @@ for key in label_devide_data.keys():
 
 max_decade = len(single_cell_splitby_breed_np.keys())
 single_cell_matrix = []
-#
+
 for i in range(max_decade):
     single_cell_matrix.append(single_cell_splitby_breed_np[i].tolist())
 
@@ -280,8 +280,6 @@ model_choice_1 = args.model_choice_1
 ### 9. <a id="Model-training/loading">Model training/loading</a>
 ```python
 logger = initialize_exp(args)
-# logger_path = get_dump_path(args)
-
 
 ratio = -1
 if not load_model_1:  # train
@@ -298,7 +296,7 @@ else:  # load model
 
 ### 10. <a id="Data-generation">Data generation</a>
 ```python
-    # generate and out put
+# generate and out put
 generate_sc_meta, generate_sc_data = generate_vae(net, args, ratio, single_cell, cfg, label, breed_2_list, index_2_gene, cell_number_target_num)
 ```
 
