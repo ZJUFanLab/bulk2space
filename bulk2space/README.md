@@ -17,7 +17,7 @@ Jie Liao,  Jingyang Qian, Yin Fang, Zhuo Chen, Xiang Zhuang et al.
 
 
 ### 1. <a id="Installation">Installation</a>
-The installation should take a few minutes on a normal computer. To install SpaGCN package you must make sure that your python version is over `3.8`. If you don’t know the version of python you can check it by:
+The installation should take a few minutes on a normal computer. To install bulk2space package you must make sure that your python version is over `3.8`. If you don’t know the version of python you can check it by:
 ```python
 import platform
 platform.python_version()
@@ -43,7 +43,7 @@ warnings.filterwarnings('ignore')
 
 
 ### 3. <a id="Parameter-definition">Parameter definition</a>
-For the current version of SpaGCN,
+For the current version of bulk2space,
 
 some parameters should be revised  according to the actual running environment and file Hierarchy:
 
