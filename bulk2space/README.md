@@ -3,16 +3,20 @@
 Jie Liao*,  Jingyang Qian, Yin Fang, Zhuo Chen, Xiang Zhuang
 
 ## Outline
-1. <a href="#Installation">Installation</a>
-2. [Import modules](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#2-Import-modules)
-3. [Read in data](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#3-Parameter-definition)
-4. [Integrate gene expression and histology into a Graph](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#4-Load-data)
-5. [Marker used](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#5-Marker-used)
-6. [Identify SVGs](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#6-identify-svgs)
-7. [Identify Meta Gene](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#7-identify-meta-gene)
-8. [Multiple tissue sections analysis](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#8-multiple-tissue-sections-analysis)
+1. [Installation](#Installation)
+2. [Import modules](#Import-modules)
+3. [Parameter definition](#Parameter-definition)
+4. [Load data](#Load-data)
+5. [Marker used](#Marker-used)
+6. [Data processing](#Data-processing)
+7. [Celltype ratio calculation](#Celltype-ratio-calculation)
+8. [Prepare the model input](#Prepare-the-model-input)
+9. [Model training/loading](#Model-training/loading)
+10. [Data generation](#Data-generation)
+11. [Data saving](#Data-saving)
 
-### 1. [Installation](#content)
+
+### 1. <a id="Installation">Installation</a>
 The installation should take a few minutes on a normal computer. To install SpaGCN package you must make sure that your python version is over `3.8`. If you don’t know the version of python you can check it by:
 ```python
 import platform
@@ -20,7 +24,7 @@ platform.python_version()
 ```
 Note: Because our bulk2space dpends on pytorch, you'd better make sure the torch is correctly installed.
 
-### 2. Import modules
+### 2. <a id="Import-modules">Import modules</a>
 
 ```python
 # -*- coding: utf-8 -*-
@@ -38,7 +42,7 @@ warnings.filterwarnings('ignore')
 ```
 
 
-### 3. Parameter definition
+### 3. <a id="Parameter-definition">Parameter definition</a>
 For the current version of SpaGCN,
 
 some parameters should be revised  according to the actual running environment and file Hierarchy:
@@ -149,7 +153,7 @@ input_st_meta_path = args.input_st_meta_path
 input_st_data_path = args.input_st_data_path
 ```
 
-### 4. Load data
+### 4. <a id="Load-data">Load data</a>
 ```python
 print("loading data......")
 
@@ -171,7 +175,7 @@ input_st_data = pd.read_csv(input_st_data_path, index_col=0)
 print("load data ok")
 ```
 
-### 4. Marker used
+### 5. <a id="Marker-used">Marker used</a>
 ```python
 # marker used
 sc = scanpy.AnnData(input_sc_data.T)
@@ -186,7 +190,7 @@ sc_marker = input_sc_data.loc[marker, :]
 bulk_marker = input_bulk.loc[marker]
 ```
 
-### 5. Data processing
+### 6. <a id="Data-processing">Data processing</a>
 ```python
 breed = input_sc_meta['Cell_type']
 breed_np = breed.values
@@ -225,7 +229,7 @@ bulk_marker = bulk_marker.values  # (gene_num, 1)
 bulk_rep = bulk_marker.reshape(bulk_marker.shape[0],)
 ```
 
-### 5.  Celltype ratio calculation
+### 7.  <a id="Celltype-ratio-calculation">Celltype ratio calculation</a>
 ```python
 # calculate celltype ratio in each spot by NNLS
 ratio = nnls(single_cell_matrix, bulk_rep)[0]
@@ -235,7 +239,7 @@ ratio_list = [r for r in ratio_array]
 cell_target_num = dict(zip(id2label, ratio_list))
 ```
 
-### 6. Prepare the model input
+### 8. <a id="Prepare-the-model-input">Prepare the model input</a>
 ```python
 # *********************************************************************
 # input：data， celltype， bulk & output: label, dic, single_cell
@@ -273,7 +277,7 @@ load_model_1 = args.load_model_1
 model_choice_1 = args.model_choice_1
 ```
 
-### 6. Model training/loading
+### 9. <a id="Model-training/loading">Model training/loading</a>
 ```python
 logger = initialize_exp(args)
 # logger_path = get_dump_path(args)
@@ -292,13 +296,13 @@ else:  # load model
     logger.info("vae load finished!")
 ```
 
-### 7. Data generation
+### 10. <a id="Data-generation">Data generation</a>
 ```python
     # generate and out put
 generate_sc_meta, generate_sc_data = generate_vae(net, args, ratio, single_cell, cfg, label, breed_2_list, index_2_gene, cell_number_target_num)
 ```
 
-### 8. Data saving
+### 11. <a id="Data-saving">Data saving</a>
 ```python
 # saving.....
 path = osp.join(args.output_path, args.project_name, 'predata')
