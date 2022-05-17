@@ -130,18 +130,17 @@ def train_vae(args, single_cell, cfg, label):
             train_loss += loss.item()
             # writer.add_scalar('loss', loss.item(), epoch)
 
-        fmt = '{:.4f}'.format
-        pbar.set_description('Train Epoch: {}'.format(epoch))
-        pbar.set_postfix(loss=fmt(train_loss))
 
         if train_loss < min_loss:
             min_loss = train_loss
-            pbar.write("Epoch {}, min loss update to: {:.4f}".format(epoch, train_loss))
+            # pbar.write("Epoch {}, min loss update to: {:.4f}".format(epoch, train_loss))
             best_vae = copy.deepcopy(vae)
             early_stop = 0
             epoch_final = epoch
         else:
             early_stop += 1
+        pbar.set_description('Train Epoch: {}'.format(epoch))
+        pbar.set_postfix(loss=f"{train_loss:.4f}", min_loss=f"{min_loss:.4f}")
         if early_stop > args.early_stop and not args.not_early_stop: # use early_stop
             break
 

@@ -18,9 +18,6 @@ def main():
     args = loadArgums(cfg)
     torch.cuda.set_device(args.gpu_id)
     print("***************bulk to spatial*****************")
-    # load_model_1 = args.load_model_1  # false：train model &  true: load model
-
-    # *********************************************************************
 
     input_sc_meta_path = args.input_sc_meta_path
     input_sc_data_path = args.input_sc_data_path
@@ -28,27 +25,23 @@ def main():
     input_st_meta_path = args.input_st_meta_path
     input_st_data_path = args.input_st_data_path
     print("loading data......")
-    
-    input_sc_meta = pd.read_csv(input_sc_meta_path, index_col=0)  # celltype
-    input_sc_data = pd.read_csv(input_sc_data_path, index_col=0)  # sc
+
+    # load sc_meta.csv file, containing two columns of cell name and cell type
+    input_sc_meta = pd.read_csv(input_sc_meta_path, index_col=0)
+    # load sc_data.csv file, containing gene expression of each cell
+    input_sc_data = pd.read_csv(input_sc_data_path, index_col=0)
     sc_gene = input_sc_data._stat_axis.values.tolist()
-    input_bulk = pd.read_csv(input_bulk_path, index_col=0)  # bulk
+    # load bulk.csv file, containing one column of gene expression in bulk
+    input_bulk = pd.read_csv(input_bulk_path, index_col=0)
     bulk_gene = input_bulk._stat_axis.values.tolist()
+    # filter overlapping genes.
     intersect_gene = list(set(sc_gene).intersection(set(bulk_gene)))
     input_sc_data = input_sc_data.loc[intersect_gene]
     input_bulk = input_bulk.loc[intersect_gene]
-
-    input_st_meta = pd.read_csv(input_st_meta_path, index_col=0)  # celltype
-    input_st_data = pd.read_csv(input_st_data_path, index_col=0)  # st
+    # load st_meta.csv and st_data.csv, containing coordinates and gene expression of each spot respectively.
+    input_st_meta = pd.read_csv(input_st_meta_path, index_col=0)
+    input_st_data = pd.read_csv(input_st_data_path, index_col=0)
     print("load data ok")
-
-    # hvg used
-    # sc = scanpy.AnnData(input_sc_data.T)
-    # scanpy.pp.highly_variable_genes(sc, n_top_genes=args.highly_variable_gene_num)
-    # sc_hvg = sc[:, sc.var.highly_variable]
-    # sc_hvg = sc_hvg.to_df().T
-    # hvg = sc_hvg._stat_axis.values.tolist()
-    # bulk_hvg = input_bulk.loc[hvg]
 
 
     # marker used
@@ -68,11 +61,11 @@ def main():
     breed = input_sc_meta['Cell_type']
     breed_np = breed.values
     breed_set = set(breed_np)
-    id2label = sorted(list(breed_set))
-    label2id = {label: idx for idx, label in enumerate(id2label)}
-    cell2label = dict()
+    id2label = sorted(list(breed_set))  # List of breed
+    label2id = {label: idx for idx, label in enumerate(id2label)}  # map breed to breed-id
 
-    label2cell = defaultdict(set)
+    cell2label = dict()  # map cell-name to breed-id
+    label2cell = defaultdict(set)  # map breed-id to cell-names
     for row in input_sc_meta.itertuples():
         cell_name = getattr(row, 'Cell')
         cell_type = label2id[getattr(row, 'Cell_type')]
@@ -98,7 +91,6 @@ def main():
     single_cell_matrix = np.array(single_cell_matrix)
     single_cell_matrix = np.transpose(single_cell_matrix)  # (gene_num, label_num)
 
-    # ratio_list = [0 for x in range(max_decade)]
     bulk_marker = bulk_marker.values  # (gene_num, 1)
     bulk_rep = bulk_marker.reshape(bulk_marker.shape[0],)
 
