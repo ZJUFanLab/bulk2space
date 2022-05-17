@@ -3,16 +3,16 @@
 Jie Liao*,  Jingyang Qian, Yin Fang, Zhuo Chen, Xiang Zhuang
 
 ## Outline
-1. [Installation](tutorial.md#1-installation)
-2. [Import modules](tutorial.md#2-import-modules)
-3. [Read in data](tutorial.md#3-read-in-data)
-4. [Integrate gene expression and histology into a Graph](tutorial.md#4-integrate-gene-expression-and-histology-into-a-graph)
-5. [Spatial domain detection using SpaGCN](tutorial.md#5-spatial-domain-detection-using-spagcn)
-6. [Identify SVGs](tutorial.md#6-identify-svgs)
-7. [Identify Meta Gene](tutorial.md#7-identify-meta-gene)
-8. [Multiple tissue sections analysis](tutorial.md#8-multiple-tissue-sections-analysis)
+1. <a href="#Installation">Installation</a>
+2. [Import modules](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#2-Import-modules)
+3. [Read in data](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#3-Parameter-definition)
+4. [Integrate gene expression and histology into a Graph](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#4-Load-data)
+5. [Marker used](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#5-Marker-used)
+6. [Identify SVGs](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#6-identify-svgs)
+7. [Identify Meta Gene](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#7-identify-meta-gene)
+8. [Multiple tissue sections analysis](https://github.com/ZJUFanLab/bulk2space/edit/main/bulk2space/bulk2space.mdtutorial.md#8-multiple-tissue-sections-analysis)
 
-### 1. Installation
+### 1. [Installation](#content)
 The installation should take a few minutes on a normal computer. To install SpaGCN package you must make sure that your python version is over `3.8`. If you don’t know the version of python you can check it by:
 ```python
 import platform
