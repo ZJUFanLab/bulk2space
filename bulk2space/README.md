@@ -1,6 +1,6 @@
 <h1><center>Bulk2space Tutorial</center></h1>
 
-Jie Liao*,  Jingyang Qian, Yin Fang, Zhuo Chen, Xiang Zhuang
+Jie Liao,  Jingyang Qian, Yin Fang, Zhuo Chen, Xiang Zhuang et al.
 
 ## Outline
 1. [Installation](#Installation)
