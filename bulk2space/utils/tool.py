@@ -27,7 +27,9 @@ from scipy.linalg import solve
 from sklearn.neighbors import KDTree
 from sklearn.neighbors import NearestNeighbors
 import warnings
+
 warnings.filterwarnings('ignore')
+
 
 # bulk deconvolution
 class myDataset(Dataset):  # 需要继承data.Dataset
@@ -63,8 +65,7 @@ class labelDataset(Dataset):  # 需要继承data.Dataset
         return self.label.shape[0]
 
 
-def train_vae(args, single_cell, cfg, label):
-
+def train_vae(args, single_cell, cfg, label, used_device):
     batch_size = args.batch_size
     feature_size = args.feature_size
     epoch_num = args.epoch_num
@@ -82,21 +83,20 @@ def train_vae(args, single_cell, cfg, label):
         exit()
     mid_hidden_size = args.hidden_size
     weight_decay = 5e-4
-    dataloader = DataLoader(myDataset(single_cell=single_cell, label=label), batch_size=batch_size, shuffle=True, pin_memory=True, num_workers=args.num_workers)
+    dataloader = DataLoader(myDataset(single_cell=single_cell, label=label), batch_size=batch_size, shuffle=True,
+                            pin_memory=True, num_workers=args.num_workers)
     criterion = nn.MSELoss()
     if args.BetaVAE_H:
         beta = 4
         beta1 = 0.9
         beta2 = 0.999
         # vae = BetaVAE_H(feature_size, hidden_list, mid_hidden_size).cuda()
-        vae = VAE(feature_size, hidden_list, mid_hidden_size).cuda()
+        vae = VAE(feature_size, hidden_list, mid_hidden_size).to(used_device)
         optimizer = AdamW(vae.parameters(), lr=lr, weight_decay=weight_decay, betas=(beta1, beta2))
     else:
-        vae = VAE(feature_size, hidden_list, mid_hidden_size).cuda()
+        vae = VAE(feature_size, hidden_list, mid_hidden_size).to(used_device)
         optimizer = AdamW(vae.parameters(), lr=lr, weight_decay=weight_decay)
-        
-    
-    
+
     pbar = tqdm(range(epoch_num))
     # writer = SummaryWriter()
     min_loss = 1000000000000000
@@ -108,28 +108,26 @@ def train_vae(args, single_cell, cfg, label):
 
         for batch_idx, data in enumerate(dataloader):
             cell_feature, label = data
-            cell_feature = torch.tensor(cell_feature, dtype=torch.float32).cuda()
+            cell_feature = torch.tensor(cell_feature, dtype=torch.float32).to(used_device)
             if args.BetaVAE_H:
-                x_recon, total_kld = vae(cell_feature)
+                x_recon, total_kld = vae(cell_feature, used_device)
 
                 recon_loss = criterion(x_recon, cell_feature)
-                beta_vae_loss = recon_loss + beta*total_kld
+                beta_vae_loss = recon_loss + beta * total_kld
                 loss = beta_vae_loss
             else:
-                x_hat, kl_div = vae(cell_feature)
+                x_hat, kl_div = vae(cell_feature, used_device)
                 loss = criterion(x_hat, cell_feature)
 
                 if args.kl_loss:
                     if kl_div is not None:
                         loss += kl_div
 
-                
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
             # writer.add_scalar('loss', loss.item(), epoch)
-
 
         if train_loss < min_loss:
             min_loss = train_loss
@@ -141,7 +139,7 @@ def train_vae(args, single_cell, cfg, label):
             early_stop += 1
         pbar.set_description('Train Epoch: {}'.format(epoch))
         pbar.set_postfix(loss=f"{train_loss:.4f}", min_loss=f"{min_loss:.4f}")
-        if early_stop > args.early_stop and not args.not_early_stop: # use early_stop
+        if early_stop > args.early_stop and not args.not_early_stop:  # use early_stop
             break
 
     name = "vae"
@@ -149,7 +147,8 @@ def train_vae(args, single_cell, cfg, label):
     if args.BetaVAE_H:
         name = "BetaVAE"
 
-    path_save = os.path.join(args.save, args.project_name, args.model_choice_1, f"{args.project_name}_{name}_epoch_{epoch_final}_lr_{args.learning_rate}_loss_{train_loss:.2f}.pth")
+    path_save = os.path.join(args.save, args.project_name, args.model_choice_1,
+                             f"{args.project_name}_{name}_epoch_{epoch_final}_lr_{args.learning_rate}_loss_{train_loss:.2f}.pth")
     if not osp.exists(os.path.join(args.save, args.project_name, args.model_choice_1)):
         os.makedirs(os.path.join(args.save, args.project_name, args.model_choice_1))
     torch.save(best_vae.state_dict(), path_save)
@@ -158,8 +157,9 @@ def train_vae(args, single_cell, cfg, label):
     return vae
 
 
-def load_vae(args, cfg):
-    assert args.load_path_1 != osp.join(project_root, args.save, args.model_choice_1, ''), "load path has to be assigned!!"
+def load_vae(args, cfg, used_device):
+    assert args.load_path_1 != osp.join(project_root, args.save, args.model_choice_1,
+                                        ''), "load path has to be assigned!!"
     load_path_1 = args.load_path_1
     # else:
     #     load_path = cfg.load_path_vae
@@ -173,20 +173,19 @@ def load_vae(args, cfg):
     elif int(args.hidden_lay) == 2:
         hidden_list = [8192, 4096, 2048, 1024]
     mid_hidden_size = args.hidden_size
-    vae = VAE(feature_size, hidden_list, mid_hidden_size).cuda()
+    vae = VAE(feature_size, hidden_list, mid_hidden_size).to(used_device)
 
     vae.load_state_dict(torch.load(osp.join(args.save, load_path_1)))
     return vae
 
 
-def generate_vae(net, args, ratio, single_cell, cfg, label, breed_2_list, index_2_gene, cell_number_target_num=None):
-    # pdb.set_trace()
+def generate_vae(net, args, ratio, single_cell, cfg, label, breed_2_list, index_2_gene, cell_number_target_num=None, used_device=None):
     # net in cuda now
     for p in net.parameters():  # reset requires_grad
         p.requires_grad = False  # avoid computation
-    
+
     net.eval()
-    net.cuda()
+    net.to(used_device)
     cell_all_generate = []
     label_all_generate = []
 
@@ -195,16 +194,16 @@ def generate_vae(net, args, ratio, single_cell, cfg, label, breed_2_list, index_
         all_to_generate += x
 
     if cell_number_target_num != None:
-        epochs = 10000 # 10000次
+        epochs = 10000  # 10000次
         ratio = 1
     else:
         epochs = 1
- 
+
     fmt = '{}'.format
     cell_feature = torch.from_numpy(single_cell).float()
     label = torch.from_numpy(label)
     ##############
-    
+
     with torch.no_grad():
         with tqdm(total=all_to_generate) as pbar:
             for epoch in range(epochs):
@@ -218,43 +217,43 @@ def generate_vae(net, args, ratio, single_cell, cfg, label, breed_2_list, index_
                     else:
                         cell_number_target_num[label_list[i]] -= 1
                         generate_num += 1
-                        key_list.append(i) 
-                
+                        key_list.append(i)
 
                 if cell_number_target_num == None or all_to_generate == 0 or len(key_list) == 0:
-                    assert all_to_generate == 0 and len(key_list) == 0 
+                    assert all_to_generate == 0 and len(key_list) == 0
                     break
 
                 # 随机打乱
                 random.shuffle(key_list)
-                
+
                 label = label.index_select(0, torch.tensor(key_list))
                 cell_feature = cell_feature.index_select(0, torch.tensor(key_list))
 
-                dataloader = DataLoader(myDataset(single_cell=cell_feature, label=label), batch_size=300, shuffle=False, pin_memory=True, num_workers=12)
+                dataloader = DataLoader(myDataset(single_cell=cell_feature, label=label), batch_size=300, shuffle=False,
+                                        pin_memory=True, num_workers=12)
                 for batch_idx, data in enumerate(dataloader):  # 一个batch
                     cell_feature_batch, label_batch = data
-                    cell_feature_batch = cell_feature_batch.cuda()
+                    cell_feature_batch = cell_feature_batch.to(used_device)
                     pbar.set_description('Generate Epoch: {}'.format(epoch))
                     ##############
 
                     # pbar.set_postfix(remain_to_generate=fmt(all_to_generate))
                     label_batch = label_batch.cpu().numpy()
 
-                    
                     for j in range(ratio):  # 翻倍多少
-                        ans_l, _ = net(cell_feature_batch)
+                        ans_l, _ = net(cell_feature_batch, used_device)
                         ans_l = ans_l.cpu().data.numpy()
                         # for i in range(ans_l.shape[0]):
                         cell_all_generate.extend(ans_l)
                         label_all_generate.extend(label_batch)
-                
+
                 all_to_generate -= generate_num
                 pbar.update(generate_num)
 
     print("generated done!")
     print("begin data to spatial mapping...")
-    generate_sc_meta, generate_sc_data = prepare_data(args, cell_all_generate, label_all_generate, breed_2_list, index_2_gene)
+    generate_sc_meta, generate_sc_data = prepare_data(args, cell_all_generate, label_all_generate, breed_2_list,
+                                                      index_2_gene)
     print("Data have been prepared...")
     return generate_sc_meta, generate_sc_data
 
@@ -337,7 +336,6 @@ def create_st(generate_sc_data, generate_sc_meta, spot_num, cell_num, gene_num, 
         marker = list(marker_array)
         sc = sc.loc[marker, :]
         spots = spots.loc[marker, :]
-
 
     # file_path = 'data/step1/simulated'
     # if not osp.exists(file_path):
@@ -444,7 +442,6 @@ class CreatData:
         self.generate_sc_data = self.generate_sc_data.loc[intersect_gene]
         self.st_data = self.st_data.loc[intersect_gene]
 
-
     def cre_data(self):
         ftrain = filepath(self.args.output_path, self.args.
                           project_name, self.args.xtrain, self.args.mul_train)
@@ -452,13 +449,13 @@ class CreatData:
         if not osp.isfile(ftrain) and self.args.train_model_2:
             # train
             print('preparing train data...')
-            sc_train, _, st_train, meta_train = create_st(self.generate_sc_data, self.generate_sc_meta, self.args.spot_num, self.args.cell_num,
+            sc_train, _, st_train, meta_train = create_st(self.generate_sc_data, self.generate_sc_meta,
+                                                          self.args.spot_num, self.args.cell_num,
                                                           self.args.top_marker_num, self.args.marker_used)
             pos_train, neg_train = create_sample(sc_train, st_train, meta_train, self.args.mul_train)
             xtrain, ytrain = get_data(pos_train, neg_train)
             save(xtrain, self.args.output_path, self.args.project_name, self.args.xtrain, self.args.mul_train)
             save(ytrain, self.args.output_path, self.args.project_name, self.args.ytrain, self.args.mul_train)
-
 
         if osp.isfile(ftrain) and self.args.train_model_2:
             print('train data already prepared.')
@@ -467,35 +464,25 @@ class CreatData:
 class Runner:
     def __init__(self, generate_sc_data, generate_sc_meta, st_data, st_meta, args):
         self.args = args
-        # self.log_dir = get_dump_path(args)
-        # self.model_dir = os.path.join(self.args.output_path, 'save_model')
-        # self.output_dir = os.path.join(self.args.output_path, 'output_data')
-        self.model_dir = self.args.save
-        self.output_dir = self.args.output_path
+        self.model_dir = self.args.save  # saving folder
+        self.output_dir = self.args.output_path  # output folder
         self.projrct = self.args.project_name
 
-        # self.dataset = self.args.dataset
-        self.writer = SummaryWriter()
         self.train_model_2 = args.train_model_2
 
-        self.sc_test_allgene = generate_sc_data
-        self.cell_type = generate_sc_meta
-        self.st_data = st_data
-        self.meta_test = st_meta
+        self.sc_test_allgene = generate_sc_data  # pandas.DataFrame, generated gene-cell expression data
+        self.cell_type = generate_sc_meta  # pandas.DataFrame, cell type
+        self.st_data = st_data  # pandas.DataFrame, gene-sport expression data
+        self.meta_test = st_meta  # pandas.DataFrame, spot coordinate.
 
         # load data
         if self.train_model_2:
-            # self.xtrain = load(self.dataset, self.args.xtrain, self.args.mul_train, np=True)  # 5890, 11787])
-            # self.ytrain = load(self.dataset, self.args.ytrain, self.args.mul_train, np=True)  # [5890])
-            self.xtrain = load(self.output_dir, self.projrct, self.args.xtrain, self.args.mul_train, np=True)  # 5890, 11787])
+            self.xtrain = load(self.output_dir, self.projrct, self.args.xtrain, self.args.mul_train,
+                               np=True)  # 5890, 11787])
             self.ytrain = load(self.output_dir, self.projrct, self.args.ytrain, self.args.mul_train, np=True)  # [5890])
 
-        # self.sc_test_allgene = load_sc_data(args.sc_path, 'data', args.dataset, args.dataname)
-        # self.sc_test, self.st_test = load_st_data(args.st_path, args.sc_path, args.dataset, args.dataname,
-        #                                           args.gene_num, args.st_data, args.marker_used)
-
-        self.sc_test = self.sc_test_allgene
-        self.st_test = self.st_data
+        self.sc_test = self.sc_test_allgene  # pd.DataFrame, test cell-gene expression data.
+        self.st_test = self.st_data  # pd.DataFrame, test spot-gene expression data.
         sc_gene = self.sc_test._stat_axis.values.tolist()
         st_gene = self.st_test._stat_axis.values.tolist()
         intersect_gene = list(set(sc_gene).intersection(set(st_gene)))
@@ -503,14 +490,7 @@ class Runner:
         self.st_test = self.st_test.loc[intersect_gene]
 
         if self.args.marker_used:
-            print('select top %d marker genes of each cell type...' %self.args.top_marker_num)
-
-            # sc = scanpy.AnnData(self.sc_test.T)
-            # scanpy.pp.highly_variable_genes(sc, n_top_genes=self.args.highly_variable_gene_num)
-            # self.sc_test = sc[:, sc.var.highly_variable]
-            # self.sc_test = self.sc_test.to_df().T
-            # gene_list = self.sc_test._stat_axis.values.tolist()
-            # self.st_test = self.st_test.loc[gene_list, :]
+            print('select top %d marker genes of each cell type...' % self.args.top_marker_num)
 
             sc = scanpy.AnnData(self.sc_test.T)
             sc.obs = self.cell_type[['Cell_type']]
@@ -523,15 +503,9 @@ class Runner:
             self.sc_test = self.sc_test.loc[marker, :]
             self.st_test = self.st_test.loc[marker, :]
 
-
-        # self.meta_test = load_st_meta(args.st_path, args.st_meta)
-
         if self.args.model_choice_2 == 'df':
             self.model = CascadeForestClassifier(random_state=self.args.random_seed, n_jobs=os.cpu_count() // 4 * 3,
                                                  verbose=0)
-
-        # self.cell_type = load_sc_data(args.sc_path, 'celltype', self.dataset, args.dataname)
-        # pdb.set_trace()
 
         breed = self.cell_type['Cell_type']
         breed_np = breed.values
@@ -548,15 +522,16 @@ class Runner:
 
     def run(self):
         if self.train_model_2:
-            self.model.fit(self.xtrain, self.ytrain)
+            self.model.fit(self.xtrain, self.ytrain)  # train model
             self._save_model(os.path.join(self.model_dir, self.projrct, self.args.model_choice_2))
-
+            # save model parameters
             print('model trained sucessfully, start saving output ...')
-            self.cre_csv()
+            df_meta, df_spot = self.cre_csv()  # save predicted results.
 
         if not self.train_model_2:
             print('model has been loaded ...')
-            self.cre_csv()
+            df_meta, df_spot = self.cre_csv()
+        return df_meta, df_spot
 
     def cre_csv(self):
         if not self.train_model_2:
@@ -587,7 +562,7 @@ class Runner:
             for spot_indx in range(len(spot_name)):
                 spot = spot_name[spot_indx]  # spotname
                 re_list.append(process_pool.apply_async(predict_for_one_spot, (
-                self.model, self.st_test, cell_name, spot_name, spot_indx, cfeat)))
+                    self.model, self.st_test, cell_name, spot_name, spot_indx, cfeat)))
 
             process_pool.close()
             process_pool.join()
@@ -599,18 +574,22 @@ class Runner:
                 for c, p in zip(cell_name, predict):
                     score_triple_list.append((c, spot, p))  # (cell, spot, score)
                 spot2ratio[spot] = np.round(ratio[spot_indx] * self.args.k)  # [n1, n2, ...]
-
+            # spot2ratio: map spot to cell type ratio in it.
             score_triple_list = sorted(score_triple_list, key=lambda x: x[2], reverse=True)
+            # sort by score
             for c, spt, score in score_triple_list:
                 # cell name, spot name, score
                 if max_cell_in_diff_spot is not None and len(cell2spot[c]) == max_cell_in_diff_spot:
+                    # The number of this cell in different spots reaches a maximum
                     continue
                 if len(spot2cell[spt]) == self.args.k:
+                    # The maximum number of cells in this spot
                     continue
                 cell_class = self.cell2label.get(c)
                 if cell_class is None:
                     continue
                 if spot2ratio[spt][cell_class] > 0:
+                    # Put this cell in this spot
                     spot2ratio[spt][cell_class] -= 1
                     spot2cell[spt].add(c)
                     cell2spot[c].add(spt)
@@ -677,13 +656,15 @@ class Runner:
         #  save df
         os.makedirs(self.output_dir, exist_ok=True)
 
-        df_meta.to_csv(os.path.join(self.output_dir, self.args.project_name, f'meta_{self.args.project_name}_{self.args.k}.csv'))
-        df_spots.to_csv(os.path.join(self.output_dir, self.args.project_name, f'data_{self.args.project_name}_{self.args.k}.csv'))
+        df_meta.to_csv(
+            os.path.join(self.output_dir, self.args.project_name, f'meta_{self.args.project_name}_{self.args.k}.csv'))
+        df_spots.to_csv(
+            os.path.join(self.output_dir, self.args.project_name, f'data_{self.args.project_name}_{self.args.k}.csv'))
         print('save csv ok')
+        return df_meta, df_spots
 
     def __calc_ratio(self):
 
-        # pdb.set_trace()
         label_devide_data = dict()
         for label, cells in self.label2cell.items():
             label_devide_data[label] = self.sc_test[list(cells)]
@@ -707,7 +688,6 @@ class Runner:
         spot_ratio_values = np.zeros((num_spot, max_decade))  # (spot_num, label_num)
         spot_values = self.st_test.values  # (gene_num, spot_num)
 
-        # pdb.set_trace()
         for i in range(num_spot):
             ratio_list = [0 for x in range(max_decade)]
             spot_rep = spot_values[:, i].reshape(-1, 1)
@@ -722,23 +702,12 @@ class Runner:
                 spot_ratio_values[i, j] = ratio_list[j]
         return spot_ratio_values
 
-
     def _load_model(self, save_path):
-        # TODO: path
-        # if args.model_type == 'df':
-        #     # save_path = osp.join(save_path, 'dir')
-        #     self.model.load(save_path)
-        # assert args.load_path_2 != osp.join(cfg.project_root, args.save, args.model_choice_2, ''), "load path has to be assigned!!"
         self.model.load(save_path)
         print(f"loading model done!")
 
     def _save_model(self, save_path):
-        # TODO: path
-        # if args.model_type == 'df':
-        #     self.model.save(save_path)
-
         self.model.save(save_path)
-            # pass
         print(f"saving model done!")
         return save_path
 

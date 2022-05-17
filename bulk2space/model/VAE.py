@@ -40,8 +40,8 @@ class VAE(nn.Module):
             x = F.relu(x)
         return x
 
-    def forward(self, x):
-        x = x.cuda()
+    def forward(self, x, used_device):
+        x = x.to(used_device)
 
         # import pdb
         # pdb.set_trace()
@@ -73,8 +73,8 @@ class BetaVAE_H(VAE):
             for m in self._modules[block]:
                 kaiming_init(m)
 
-    def forward(self, x):
-        x = x.cuda()
+    def forward(self, x, used_device):
+        x = x.to(used_device)
         distributions = self.encode(x)
         mu = distributions[:, :self.mid_hidden]
         logvar = distributions[:, self.mid_hidden:]

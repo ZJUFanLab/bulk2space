@@ -9,6 +9,7 @@ import scanpy
 from scipy.optimize import nnls
 from collections import defaultdict
 import warnings
+
 warnings.filterwarnings('ignore')
 
 
@@ -16,7 +17,9 @@ def main():
     print("***************path change*****************")
     global args
     args = loadArgums(cfg)
-    torch.cuda.set_device(args.gpu_id)
+    used_device = torch.device(
+        f"cuda:{args.gpu_id}") if args.gpu_id >= 0 and torch.cuda.is_available() else torch.device('cpu')
+    # torch.cuda.set_device(args.gpu_id)
     print("***************bulk to spatial*****************")
 
     input_sc_meta_path = args.input_sc_meta_path
@@ -43,7 +46,6 @@ def main():
     input_st_data = pd.read_csv(input_st_data_path, index_col=0)
     print("load data ok")
 
-
     # marker used
     sc = scanpy.AnnData(input_sc_data.T)
     sc.obs = input_sc_meta[['Cell_type']]
@@ -55,8 +57,6 @@ def main():
     marker = list(marker_array)
     sc_marker = input_sc_data.loc[marker, :]
     bulk_marker = input_bulk.loc[marker]
-
-
 
     breed = input_sc_meta['Cell_type']
     breed_np = breed.values
@@ -75,7 +75,7 @@ def main():
     label_devide_data = dict()
     for label, cells in label2cell.items():
         label_devide_data[label] = sc_marker[list(cells)]
-    
+
     single_cell_splitby_breed_np = {}
     for key in label_devide_data.keys():
         single_cell_splitby_breed_np[key] = label_devide_data[key].values  # [gene_num, cell_num]
@@ -87,16 +87,15 @@ def main():
     for i in range(max_decade):
         single_cell_matrix.append(single_cell_splitby_breed_np[i].tolist())
 
-
     single_cell_matrix = np.array(single_cell_matrix)
     single_cell_matrix = np.transpose(single_cell_matrix)  # (gene_num, label_num)
 
     bulk_marker = bulk_marker.values  # (gene_num, 1)
-    bulk_rep = bulk_marker.reshape(bulk_marker.shape[0],)
+    bulk_rep = bulk_marker.reshape(bulk_marker.shape[0], )
 
     # calculate celltype ratio in each spot by NNLS
     ratio = nnls(single_cell_matrix, bulk_rep)[0]
-    ratio = ratio/sum(ratio)
+    ratio = ratio / sum(ratio)
 
     ratio_array = np.round(ratio * input_sc_meta.shape[0] * args.ratio_num)
     ratio_list = [r for r in ratio_array]
@@ -143,22 +142,22 @@ def main():
     logger = initialize_exp(args)
     # logger_path = get_dump_path(args)
 
-
     ratio = -1
     if model_choice_1 == "vae":
         if not load_model_1:  # train
             logger.info("begin vae model training...")
             # ********************* training *********************
-            net = train_vae(args, single_cell, cfg, label)
+            net = train_vae(args, single_cell, cfg, label, used_device)
             # ************** training finished *******************
             logger.info("vae training finished!")
         else:  # load model
             logger.info("begin vae model loading...")
-            net = load_vae(args, cfg)
+            net = load_vae(args, cfg, used_device)
             logger.info("vae load finished!")
 
         # generate and out put
-        generate_sc_meta, generate_sc_data = generate_vae(net, args, ratio, single_cell, cfg, label, breed_2_list, index_2_gene, cell_number_target_num)
+        generate_sc_meta, generate_sc_data = generate_vae(net, args, ratio, single_cell, cfg, label, breed_2_list,
+                                                          index_2_gene, cell_number_target_num, used_device)
 
         # generate_sc_meta.to_csv("/workspace/chensir/chenzhuo/bulk2space/data/generate_meta.csv")
         # generate_sc_data.to_csv("/workspace/chensir/chenzhuo/bulk2space/data/generate_data.csv")
@@ -171,8 +170,10 @@ def main():
         # kl_loss BetaVAE_H
         if args.BetaVAE_H:
             name = "BetaVAE"
-        path_label_generate_csv = os.path.join(path, args.project_name + "_celltype_pred_" + name + "_epoch" + str(args.epoch_num) + '_lr' + str(args.learning_rate) + ".csv")
-        path_cell_generate_csv = os.path.join(path, args.project_name + "_data_pred_" + name + "_epoch" + str(args.epoch_num) + '_lr' + str(args.learning_rate) + ".csv")
+        path_label_generate_csv = os.path.join(path, args.project_name + "_celltype_pred_" + name + "_epoch" + str(
+            args.epoch_num) + '_lr' + str(args.learning_rate) + ".csv")
+        path_cell_generate_csv = os.path.join(path, args.project_name + "_data_pred_" + name + "_epoch" + str(
+            args.epoch_num) + '_lr' + str(args.learning_rate) + ".csv")
 
         generate_sc_meta.to_csv(path_label_generate_csv)
         generate_sc_data.to_csv(path_cell_generate_csv)
