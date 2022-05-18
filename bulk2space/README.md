@@ -47,7 +47,7 @@ For the current version of Bulk2Space,
 
 some parameters should be revised  according to the actual running environment and file Hierarchy:
 
-- gpu_id
+-  `gpu_id`
 - feature_size
 - data_path
 - dump_path
