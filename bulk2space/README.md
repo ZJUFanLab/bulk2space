@@ -49,23 +49,22 @@ some parameters should be revised  according to the actual running environment a
 
 - `gpu_id`: The GPU ID, eg:`--gpu_id 0`
 - `project_name`: The name of your project, eg:`--project_name experiment1`
-- `data_path`: The name of the folder where you store the data, eg:`--data_path example_data`
 - `input_bulk_path`: The name of the input bulk-seq data, eg:`--input_bulk_path bulk_data.csv`
 - `input_sc_data_path`: The name of the input scRNA-seq data, eg:`--input_sc_data_path sc_data.csv`
 - `input_sc_meta_path`: The name of the input scRNA-seq meta, eg:`--input_sc_meta_path sc_meta.csv`
 - `input_st_data_path`: The name of the input spatial transcriptomics data, eg:`--input_st_data_path st_data.csv`
 - `input_st_meta_path`: The name of the input spatial transcriptomics meta, eg:`--input_st_meta_path st_meta.csv`
-- `load_model_1`: 
-- `load_path_1`
-- `train_model_2`
-- `load_path_2`
+- `load_model_1`: Whether to load the trained bulk-deconvolution model, eg:`--load_model_1 False`
+- `load_path_1`: The path of the trained bulk-deconvolution model to be loaded
+- `train_model_2`: Whether to train the spatial mapping model, eg:`--train_model_2 True`
+- `load_path_2`: The path of the trained spatial mapping model to be loaded
 - `output_path`: The name of the folder where you store the output data, eg:`--output_path output_data`
-- `previous_project_name`
 
 
 some parameters could be revised  as needed:
-- `BetaVAE_H`
-- `batch_size`
+- `BetaVAE_H`: Whether to use β-VAE model or not,  eg:`--BetaVAE_H`
+- `batch_size`: The batch size for β-VAE model training,  eg:`--batch_size 512`
+- `learning_rate`: The learning rate for β-VAE model training,  eg:`--learning_rate 0.0001`
 - `spot_num`
 - `cell_num`
 - `early_stop`
@@ -74,7 +73,6 @@ some parameters could be revised  as needed:
 - `hidden_size`
 - `k`
 - `kl_loss`
-- `learning_rate`
 - `marker_used`
 - `not_early_stop`
 - `num_workers`
