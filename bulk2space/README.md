@@ -139,6 +139,12 @@ input_st_data_path = args.input_st_data_path
 ```
 
 ### 4. <a id="Load-data">Load data</a>
+`Bulk2Space` requires three formatted data as input:
+- Bulk-seq Normalized Data
+    -  a `.csv` file with
+- Single Cell RNA-seq Normalized Data
+- Spatial Transcriptomics Normalized Data
+
 ```python
 print("loading data......")
 
