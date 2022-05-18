@@ -63,20 +63,15 @@ some parameters should be revised  according to the actual running environment a
 
 some parameters could be revised  as needed:
 - `BetaVAE_H`: Whether to use β-VAE model or not,  eg:`--BetaVAE_H`
-- `batch_size`: The batch size for β-VAE model training,  eg:`--batch_size 512`
-- `learning_rate`: The learning rate for β-VAE model training,  eg:`--learning_rate 0.0001`
-- `spot_num`
-- `cell_num`
-- `early_stop`
-- `epoch_num`
-- `hidden_lay`
-- `hidden_size`
+- `batch_size`: The batch size for β-VAE/VAE model training,  eg:`--batch_size 512`
+- `learning_rate`: The learning rate for β-VAE/VAE model training,  eg:`--learning_rate 0.0001`
+- `hidden_size`: The hidden size of β-VAE/VAE model,  eg:`--hidden_size 256`
+- `hidden_lay`: The hidden layer of β-VAE/VAE model(0:[2048, 1024, 512] \n 1: [4096, 2048, 1024, 512] \n 2: [8192, 4096, 2048, 1024]),  eg:`--hidden_lay 0`
+- `epoch_num`: The epoch number for β-VAE/VAE model training,  eg:`--epoch_num 5000`
+- `not_early_stop`: 
+- `early_stop`: 
 - `k`
-- `kl_loss`
 - `marker_used`
-- `not_early_stop`
-- `num_workers`
-- `random_seed`
 - `ratio_num`
 - `spot_data`
 - `top_marker_num`
