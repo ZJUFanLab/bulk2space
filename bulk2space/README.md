@@ -7,9 +7,9 @@ Jie Liao,  Jingyang Qian, Yin Fang, Zhuo Chen, Xiang Zhuang et al.
 2. [Import modules](#Import-modules)
 3. [Parameter definition](#Parameter-definition)
 4. [Load data](#Load-data)
-5. [Calculate marker genes of each celltype](#Marker-used)
+5. [Calculate marker genes of each cell type](#Marker-used)
 6. [Data processing](#Data-processing)
-7. [Celltype ratio calculation](#Celltype-ratio-calculation)
+7. [Cell type proportions prediction](#Celltype-ratio-calculation)
 8. [Prepare the model input](#Prepare-the-model-input)
 9. [Model training/loading](#Model-training/loading)
 10. [Data generation](#Data-generation)
@@ -140,16 +140,7 @@ input_st_data_path = args.input_st_data_path
 ### 4. <a id="Load-data">Load data</a>
 `Bulk2Space` requires five formatted data as input:
 - Bulk-seq Normalized Data
-    - a `.csv` file with genes as rows and sample as column
-     
-    
-    |         | Sample  | 
-    | :-----: | :-----: | 
-    | Gene1   | 5.22    |
-    | Gene2   | 3.67    |
-    | ...     | ...     |
-    | GeneN   | 15.76   |
-    
+    - a `.csv` file with genes as rows and sample as column  
 - Single Cell RNA-seq Normalized Data
     - a `.csv` file with genes as rows and cells as columns
 - Single Cell RNA-seq Annotation Data
@@ -180,9 +171,10 @@ input_st_data = pd.read_csv(input_st_data_path, index_col=0)
 print("load data ok")
 ```
 
-### 5. <a id="Marker-used">Calculate marker genes of each celltype</a>
+### 5. <a id="Marker-used">Calculate marker genes of each cell type</a>
+In this step, we apply `scanpy` to calculate the marker genes of each cell type in order to reduce the noise affect when estimating the cell type proportion of bulk-seq data. We can apply a appropriate number of marker genes by the `--top_marker_num` parameter.
 ```python
-# marker used
+# Calculate marker genes of each cell type
 sc = scanpy.AnnData(input_sc_data.T)
 sc.obs = input_sc_meta[['Cell_type']]
 scanpy.tl.rank_genes_groups(sc, 'Cell_type', method='wilcoxon')
@@ -234,9 +226,9 @@ bulk_marker = bulk_marker.values  # (gene_num, 1)
 bulk_rep = bulk_marker.reshape(bulk_marker.shape[0],)
 ```
 
-### 7.  <a id="Celltype-ratio-calculation">Celltype ratio calculation</a>
+### 7.  <a id="Celltype-ratio-calculation">Cell type proportions prediction</a>
 ```python
-# calculate celltype ratio in each spot by NNLS
+# calculate celltype proportions in bulk-seq data by NNLS
 ratio = nnls(single_cell_matrix, bulk_rep)[0]
 ratio = ratio/sum(ratio)
 ratio_array = np.round(ratio * input_sc_meta.shape[0] * args.ratio_num)

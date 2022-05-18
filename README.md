@@ -36,7 +36,7 @@ When using your own data, make sure
 * the `bulk.csv` file must contain one column of gene expression
 
     |  | Sample | 
-    | ----- | ----- | 
+    | :-----: | :-----: | 
     | Gene1 | 5.22 |
     | Gene2 | 3.67 |
     | ... | ... |
@@ -45,7 +45,7 @@ When using your own data, make sure
 * the `sc_meta.csv` file must contain two columns of cell name and cell type. Make sure the column names are correct, i.e., `Cell` and `Cell_type`
 
     |  | Cell | Cell_type |
-    | ----- | ----- | ----- |
+    | :-----: | :-----: | :-----: |
     | Cell_1 | Cell_1 | T cell |
     | Cell_2 | Cell_2 | B cell |
     | ... | ... | ... |
@@ -54,7 +54,7 @@ When using your own data, make sure
 * the `st_meta.csv` file must contain at least three columns of spot name and spatial coordinates. Make sure the column names are correct, i.e., `Spot`, `xcoord` and `ycoord`
 
     |  | Spot | xcoord | ycoord |
-    | ----- | ----- | ----- | ----- |
+    | :-----: | :-----: | :-----: | :-----: |
     | Cell_1 / Spot_1 | Cell_1 / Spot_1 | 1.2 | 5.2 |
     | Cell_2 / Spot_2 | Cell_1 / Spot_1 |5.4 | 4.3 |
     | ... | ... | ... | ... |
