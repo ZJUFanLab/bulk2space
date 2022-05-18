@@ -141,7 +141,7 @@ input_st_data_path = args.input_st_data_path
 `Bulk2Space` requires five formatted data as input:
 - Bulk-seq Normalized Data
     - a `.csv` file with genes as rows and sample as column
-    - 
+     
     
     |         | Sample  | 
     | :-----: | :-----: | 
