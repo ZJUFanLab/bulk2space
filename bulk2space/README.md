@@ -68,7 +68,7 @@ some parameters could be revised  as needed:
 - `early_stop`
 - `epoch_num`
 - `hidden_lay`
-- `hidden_size``
+- `hidden_size`
 - `k`
 - `kl_loss`
 - `learning_rate`
