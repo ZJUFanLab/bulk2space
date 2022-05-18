@@ -62,19 +62,20 @@ some parameters should be revised  according to the actual running environment a
 
 
 some parameters could be revised  as needed:
-- `BetaVAE_H`: Whether to use β-VAE model or not,  eg:`--BetaVAE_H`
-- `batch_size`: The batch size for β-VAE/VAE model training,  eg:`--batch_size 512`
-- `learning_rate`: The learning rate for β-VAE/VAE model training,  eg:`--learning_rate 0.0001`
-- `hidden_size`: The hidden size of β-VAE/VAE model,  eg:`--hidden_size 256`
-- `hidden_lay`: The hidden layer of β-VAE/VAE model(0:[2048, 1024, 512] \n 1: [4096, 2048, 1024, 512] \n 2: [8192, 4096, 2048, 1024]),  eg:`--hidden_lay 0`
-- `epoch_num`: The epoch number for β-VAE/VAE model training,  eg:`--epoch_num 5000`
+- `BetaVAE_H`: Whether to use β-VAE model or not, eg:`--BetaVAE_H`
+- `batch_size`: The batch size for β-VAE/VAE model training, eg:`--batch_size 512`
+- `learning_rate`: The learning rate for β-VAE/VAE model training, eg:`--learning_rate 0.0001`
+- `hidden_size`: The hidden size of β-VAE/VAE model, eg:`--hidden_size 256`
+- `hidden_lay`: The hidden layer of β-VAE/VAE model(0:[2048, 1024, 512] \n 1: [4096, 2048, 1024, 512] \n 2: [8192, 4096, 2048, 1024]), eg:`--hidden_lay 0`
+- `epoch_num`: The epoch number for β-VAE/VAE model training, eg:`--epoch_num 5000`
 - `not_early_stop`: 
 - `early_stop`: 
-- `k`
-- `marker_used`
-- `ratio_num`
-- `spot_data`
-- `top_marker_num`
+- `k`: The number of cells per spot set in spatial mapping step, eg:`--k 10`
+- `marker_used`: Whether to only use marker genes of each celltype when calculating the celltype proportion, eg:`--marker_used True`
+- `top_marker_num`: The number of marker genes of each celltype used, eg:`--top_marker_num 500`
+- `ratio_num`: The multiples of the number of cells of generated scRNA-seq data, eg:`--ratio_num 1`
+- `spot_data`: The type of the input spatial transcriptomics data, `True` for barcoded-based ST data (like ST, 10x Visium or Slide-seq) and  `False` for image-based ST data (like MERFISH, SeqFISH or STARmap)
+- 
 
 ```python
 global args 
