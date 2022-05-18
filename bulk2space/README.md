@@ -59,7 +59,7 @@ some parameters should be revised  according to the actual running environment a
 - `load_path_1`
 - `train_model_2`
 - `load_path_2`
-- `output_path`
+- `output_path`: The name of the folder where you store the output data, eg:`--output_path output_data`
 - `previous_project_name`
 
 
