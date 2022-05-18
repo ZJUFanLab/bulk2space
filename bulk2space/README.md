@@ -7,7 +7,7 @@ Jie Liao,  Jingyang Qian, Yin Fang, Zhuo Chen, Xiang Zhuang et al.
 2. [Import modules](#Import-modules)
 3. [Parameter definition](#Parameter-definition)
 4. [Load data](#Load-data)
-5. [Marker used](#Marker-used)
+5. [Calculate marker genes of each celltype](#Marker-used)
 6. [Data processing](#Data-processing)
 7. [Celltype ratio calculation](#Celltype-ratio-calculation)
 8. [Prepare the model input](#Prepare-the-model-input)
@@ -180,7 +180,7 @@ input_st_data = pd.read_csv(input_st_data_path, index_col=0)
 print("load data ok")
 ```
 
-### 5. <a id="Marker-used">Marker used</a>
+### 5. <a id="Marker-used">Calculate marker genes of each celltype</a>
 ```python
 # marker used
 sc = scanpy.AnnData(input_sc_data.T)
