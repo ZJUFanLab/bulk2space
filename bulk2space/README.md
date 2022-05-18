@@ -143,7 +143,7 @@ input_st_data_path = args.input_st_data_path
     - a `.csv` file with genes as rows and sample as column
     
     |       | Sample | 
-    | ----- | ----- | 
+    | ---------- | ---------- | 
     | Gene1 | 5.22 |
     | Gene2 | 3.67 |
     | ... | ... |
