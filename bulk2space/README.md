@@ -51,11 +51,13 @@ some parameters should be revised  according to the actual running environment a
 - `project_name`: The name of your project, eg:`--project_name experiment1`
 - `data_path`: The name of the folder where you store the data, eg:`--data_path example_data`
 - `input_bulk_path`: The name of the input bulk-seq data, eg:`--input_bulk_path bulk_data.csv`
-- `input_sc_data_path`
-- `input_sc_meta_path`
-- `input_st_data_path`
-- `input_st_meta_path`
+- `input_sc_data_path`: The name of the input scRNA-seq data, eg:`--input_sc_data_path sc_data.csv`
+- `input_sc_meta_path`: The name of the input scRNA-seq meta, eg:`--input_sc_meta_path sc_meta.csv`
+- `input_st_data_path`: The name of the input spatial transcriptomics data, eg:`--input_st_data_path st_data.csv`
+- `input_st_meta_path`: The name of the input spatial transcriptomics meta, eg:`--input_st_meta_path st_meta.csv`
+- `load_model_1`: 
 - `load_path_1`
+- `train_model_2`
 - `load_path_2`
 - `output_path`
 - `previous_project_name`
@@ -73,7 +75,6 @@ some parameters could be revised  as needed:
 - `k`
 - `kl_loss`
 - `learning_rate`
-- `load_model_1`
 - `marker_used`
 - `not_early_stop`
 - `num_workers`
@@ -81,7 +82,6 @@ some parameters could be revised  as needed:
 - `ratio_num`
 - `spot_data`
 - `top_marker_num`
-- `train_model_2`
 
 ```python
 global args 
