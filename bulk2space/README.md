@@ -142,12 +142,13 @@ input_st_data_path = args.input_st_data_path
 - Bulk-seq Normalized Data
     - a `.csv` file with genes as rows and sample as column
     
-    |       | Sample | 
+    |         | Sample  | 
     | :-----: | :-----: | 
-    | Gene1 | 5.22 |
-    | Gene2 | 3.67 |
-    | ... | ... |
-    | GeneN | 15.76 |
+    | Gene1   | 5.22    |
+    | Gene2   | 3.67    |
+    | ...     | ...     |
+    | GeneN   | 15.76   |
+    
 - Single Cell RNA-seq Normalized Data
     - a `.csv` file with genes as rows and cells as columns
 - Single Cell RNA-seq Annotation Data
