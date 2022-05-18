@@ -1,4 +1,4 @@
-<h1><center>Bulk2space Tutorial</center></h1>
+<h1><center>Bulk2Space Tutorial</center></h1>
 
 Jie Liao,  Jingyang Qian, Yin Fang, Zhuo Chen, Xiang Zhuang et al.
 
@@ -17,12 +17,12 @@ Jie Liao,  Jingyang Qian, Yin Fang, Zhuo Chen, Xiang Zhuang et al.
 
 
 ### 1. <a id="Installation">Installation</a>
-The installation should take a few minutes on a normal computer. To install bulk2space package you must make sure that your python version is over `3.8`. If you don’t know the version of python you can check it by:
+The installation should take a few minutes on a normal computer. To install Bulk2Space package you must make sure that your python version is over `3.8`. If you don’t know the version of python you can check it by:
 ```python
 import platform
 platform.python_version()
 ```
-Note: Because our bulk2space dpends on pytorch, you'd better make sure the torch is correctly installed.
+Note: Because our Bulk2Space dpends on pytorch, you'd better make sure the torch is correctly installed.
 
 ### 2. <a id="Import-modules">Import modules</a>
 
@@ -43,7 +43,7 @@ warnings.filterwarnings('ignore')
 
 
 ### 3. <a id="Parameter-definition">Parameter definition</a>
-For the current version of bulk2space,
+For the current version of Bulk2Space,
 
 some parameters should be revised  according to the actual running environment and file Hierarchy:
 
