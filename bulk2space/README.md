@@ -9,7 +9,7 @@ Jie Liao,  Jingyang Qian, Yin Fang, Zhuo Chen, Xiang Zhuang et al.
 4. [Load data](#Load-data)
 5. [Calculate marker genes of each cell type](#Marker-used)
 6. [Data processing](#Data-processing)
-7. [Celltype ratio calculation](#Celltype-ratio-calculation)
+7. [Cell type proportions prediction](#Celltype-ratio-calculation)
 8. [Prepare the model input](#Prepare-the-model-input)
 9. [Model training/loading](#Model-training/loading)
 10. [Data generation](#Data-generation)
@@ -172,7 +172,7 @@ print("load data ok")
 ```
 
 ### 5. <a id="Marker-used">Calculate marker genes of each cell type</a>
-In step, we calculating the marker genes of each cell type.
+In this step, we apply `scanpy` to calculate the marker genes of each cell type in order to reduce the noise affect when estimating the cell type proportion of bulk-seq data. We can apply a appropriate number of marker genes by the `--top_marker_num` parameter.
 ```python
 # Calculate marker genes of each cell type
 sc = scanpy.AnnData(input_sc_data.T)
@@ -226,9 +226,9 @@ bulk_marker = bulk_marker.values  # (gene_num, 1)
 bulk_rep = bulk_marker.reshape(bulk_marker.shape[0],)
 ```
 
-### 7.  <a id="Celltype-ratio-calculation">Celltype ratio calculation</a>
+### 7.  <a id="Celltype-ratio-calculation">Cell type proportions prediction</a>
 ```python
-# calculate celltype ratio in each spot by NNLS
+# calculate celltype proportions in bulk-seq data by NNLS
 ratio = nnls(single_cell_matrix, bulk_rep)[0]
 ratio = ratio/sum(ratio)
 ratio_array = np.round(ratio * input_sc_meta.shape[0] * args.ratio_num)
