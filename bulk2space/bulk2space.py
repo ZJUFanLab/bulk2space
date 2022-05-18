@@ -83,7 +83,7 @@ def main():
 
     max_decade = len(single_cell_splitby_breed_np.keys())
     single_cell_matrix = []
-    #
+    
     for i in range(max_decade):
         single_cell_matrix.append(single_cell_splitby_breed_np[i].tolist())
 
@@ -100,7 +100,6 @@ def main():
     ratio_array = np.round(ratio * input_sc_meta.shape[0] * args.ratio_num)
     ratio_list = [r for r in ratio_array]
 
-    # pdb.set_trace()
     cell_target_num = dict(zip(id2label, ratio_list))
 
     # *********************************************************************
@@ -133,14 +132,12 @@ def main():
     cell_number_target_num = {}
     for k, v in cell_target_num.items():
         cell_number_target_num[dic[k]] = v
-    # pdb.set_trace()
     # *********************************************************************
     # generate data by vae
     load_model_1 = args.load_model_1
     model_choice_1 = args.model_choice_1
 
     logger = initialize_exp(args)
-    # logger_path = get_dump_path(args)
 
     ratio = -1
     if model_choice_1 == "vae":
@@ -158,10 +155,6 @@ def main():
         # generate and out put
         generate_sc_meta, generate_sc_data = generate_vae(net, args, ratio, single_cell, cfg, label, breed_2_list,
                                                           index_2_gene, cell_number_target_num, used_device)
-
-        # generate_sc_meta.to_csv("/workspace/chensir/chenzhuo/bulk2space/data/generate_meta.csv")
-        # generate_sc_data.to_csv("/workspace/chensir/chenzhuo/bulk2space/data/generate_data.csv")
-
         # saving.....
         path = osp.join(args.output_path, args.project_name, 'predata')
         if not osp.exists(path):
