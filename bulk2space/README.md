@@ -47,9 +47,10 @@ For the current version of Bulk2Space,
 
 some parameters should be revised  according to the actual running environment and file Hierarchy:
 
--  `gpu_id`
-- `data_path`
-- `input_bulk_path`
+- `gpu_id`: The GPU ID, eg:`--gpu_id 0`
+- `project_name`: The name of your project, eg:`--project_name experiment1`
+- `data_path`: The name of the folder where you store the data, eg:`--data_path example_data`
+- `input_bulk_path`: The name of the input bulk-seq data, eg:`--input_bulk_path bulk_data.csv`
 - `input_sc_data_path`
 - `input_sc_meta_path`
 - `input_st_data_path`
@@ -58,7 +59,7 @@ some parameters should be revised  according to the actual running environment a
 - `load_path_2`
 - `output_path`
 - `previous_project_name`
-- `project_name`
+
 
 some parameters could be revised  as needed:
 - `BetaVAE_H`
