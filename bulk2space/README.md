@@ -75,7 +75,6 @@ some parameters could be revised  as needed:
 - `top_marker_num`: The number of marker genes of each celltype used, eg:`--top_marker_num 500`
 - `ratio_num`: The multiples of the number of cells of generated scRNA-seq data, eg:`--ratio_num 1`
 - `spot_data`: The type of the input spatial transcriptomics data, `True` for barcoded-based ST data (like ST, 10x Visium or Slide-seq) and  `False` for image-based ST data (like MERFISH, SeqFISH or STARmap)
-- 
 
 ```python
 global args 
