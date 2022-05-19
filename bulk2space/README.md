@@ -69,7 +69,7 @@ some parameters could be revised  as needed:
 - `hidden_lay`: The hidden layer of β-VAE/VAE model(0:[2048, 1024, 512] \n 1: [4096, 2048, 1024, 512] \n 2: [8192, 4096, 2048, 1024]), eg:`--hidden_lay 0`
 - `epoch_num`: The epoch number for β-VAE/VAE model training, eg:`--epoch_num 5000`
 - `not_early_stop`: Whether to use the `early_stop` strategy, eg:`--not_early_stop False`
-- `early_stop`: The model waits N epochs before stops if no progress on the validation set or the training loss dose not decline, eg:`--early_stop 50`
+- `early_stop`: The model waits N epochs before stops since the training loss dose not decline, eg:`--early_stop 50`
 - `k`: The number of cells per spot set in spatial mapping step, eg:`--k 10`
 - `marker_used`: Whether to only use marker genes of each celltype when calculating the celltype proportion, eg:`--marker_used True`
 - `top_marker_num`: The number of marker genes of each celltype used, eg:`--top_marker_num 500`
