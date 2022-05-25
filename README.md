@@ -103,4 +103,4 @@ To perform Bulk2Space with the image-based spatial reference (MERFISH, SeqFISH, 
 * [Re-annotates ambiguous cells in the mouse hypothalamus]()
 
 # About
-Bulk2Space manuscript is unpublished. Should you have any questions, please contact Jie Liao at liaojie@zju.edu.cn, Jingyang Qian at qianjingyang@zju.edu.cn, or Yin Fang at fangyin@zju.edu.cn
+Should you have any questions, please contact Jie Liao at liaojie@zju.edu.cn, Jingyang Qian at qianjingyang@zju.edu.cn, or Yin Fang at fangyin@zju.edu.cn
