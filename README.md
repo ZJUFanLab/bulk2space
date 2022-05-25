@@ -5,7 +5,7 @@
 
 [![python 3.8](https://img.shields.io/badge/python-3.8-brightgreen)](https://www.python.org/) 
 
-Bulk2Space is a spatial deconvolution method based on deep learning frameworks, which converts bulk transcriptomes into spatially resolved single-cell expression profiles.
+Bulk2Space is a two-step spatial deconvolution method based on deep learning frameworks, which converts bulk transcriptomes into spatially resolved single-cell expression profiles.
 
 ![Image text](images/overview.png)
 
@@ -103,4 +103,4 @@ To perform Bulk2Space with the image-based spatial reference (MERFISH, SeqFISH, 
 * [Re-annotates ambiguous cells in the mouse hypothalamus]()
 
 # About
-Should you have any questions, please contact Jie Liao at liaojie@zju.edu.cn, Jingyang Qian at qianjingyang@zju.edu.cn, or Yin Fang at fangyin@zju.edu.cn
+Should you have any questions, please feel free to contact the co-first authors of the manuscript, Dr. Jie Liao (liaojie@zju.edu.cn), Mr. Jingyang Qian (qianjingyang@zju.edu.cn), Miss Yin Fang (fangyin@zju.edu.cn), Mr. Zhuo Chen (zhou.chen@zju.edu.cn), or Mr. Xiang Zhuang (zhuangxiang@zju.edu.cn)
