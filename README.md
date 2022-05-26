@@ -7,7 +7,7 @@
 
 Bulk2Space is a two-step spatial deconvolution method based on deep learning frameworks, which converts bulk transcriptomes into spatially resolved single-cell expression profiles.
 
-![Image text](images/overview.png)
+![Image text](images/overview.jpeg)
 
 # Requirements and Installation
 [![tensorboard 2.6.0](https://img.shields.io/badge/tensorboard-2.6.0-brightgreen)](https://pypi.org/project/tensorboard/) [![numpy 1.19.2](https://img.shields.io/badge/numpy-1.19.2-green)](https://github.com/numpy/numpy) [![pandas 1.1.3](https://img.shields.io/badge/pandas-1.1.3-yellowgreen)](https://github.com/pandas-dev/pandas) [![scikit-learn 1.0.1](https://img.shields.io/badge/scikit--learn-1.0.1-yellow)](https://github.com/scikit-learn/scikit-learn) [![scipy 1.5.2](https://img.shields.io/badge/scipy-1.5.2-orange)](https://github.com/scipy/scipy) [![torch 1.7.0](https://img.shields.io/badge/torch-1.7.0-red)](https://github.com/pytorch/pytorch) [![deep-forest 0.1.5](https://img.shields.io/badge/deep--forest-0.1.5-success)](https://pypi.org/project/deep-forest/) [![easydict 1.9](https://img.shields.io/badge/easydict-1.9-informational)](https://pypi.org/project/easydict/) [![pytorch-transformers 1.2.0](https://img.shields.io/badge/pytorch--transformers-1.2.0-blueviolet)](https://pypi.org/project/pytorch-transformers/) [![scanpy 1.8.1](https://img.shields.io/badge/scanpy-1.8.1-ff69b4)](https://pypi.org/project/scanpy/) [![tqdm 4.50.2](https://img.shields.io/badge/tqdm-4.50.2-9cf)](https://pypi.org/project/tqdm/) [![Unidecode 1.3.0](https://img.shields.io/badge/Unidecode-1.3.0-inactive)](https://pypi.org/project/Unidecode/) 
