@@ -94,13 +94,13 @@ Then you will get your results in the `output_data` folder.
 To figure out the important parameters of Bulk2Space or perform a test run, please refer to:
 * [Demonstration of Bulk2Space on demo data](bulk2space/tutorial/demo.ipynb)
 
-To perform Bulk2Space with the barcoding-based spatial reference (10x Genomics, ST, or Slide-seq):
+To perform Bulk2Space with the barcoding-based spatial reference (10x Genomics, ST, or Slide-seq), please refer to:
 
 * [Integrating spatial gene expression and histomorphology in pancreatic ductal adenocarcinoma (PDAC)](bulk2space/tutorial/PDAC_analysis.ipynb)
 
-To perform Bulk2Space with the image-based spatial reference (MERFISH, SeqFISH, or STARmap) (TODO):
+To perform Bulk2Space with the image-based spatial reference (MERFISH, SeqFISH, or STARmap), please refer to:
 
-* [Re-annotates ambiguous cells in the mouse hypothalamus]()
+* [Spatially resolved analysis of mouse hypothalamus by Bulk2Space](bulk2space/tutorial/hypothalamus_analysis.ipynb)
 
 # About
 Should you have any questions, please feel free to contact the co-first authors of the manuscript, Dr. Jie Liao (liaojie@zju.edu.cn), Mr. Jingyang Qian (qianjingyang@zju.edu.cn), Miss Yin Fang (fangyin@zju.edu.cn), Mr. Zhuo Chen (zhuo.chen@zju.edu.cn), or Mr. Xiang Zhuang (zhuangxiang@zju.edu.cn)
