@@ -17,7 +17,7 @@ For bulk2space, the python version need is over 3.8. If you have installed Pytho
 conda create -n bulk2space python=3.8.5
 conda activate bulk2space
 
-cd bulk2space
+cd bulk2space-main
 pip install -r requirements.txt 
 ```
 
@@ -26,11 +26,13 @@ pip install -r requirements.txt
 ## Run the demo data
 If you choose the spatial barcoding-based data (10x Genomics, ST, or Slide-seq) as spatial reference, run the following command:
 ```
+cd bulk2space
 python bulk2space.py --project_name test1 --data_path example_data/demo1 --input_sc_meta_path demo1_sc_meta.csv --input_sc_data_path demo1_sc_data.csv --input_bulk_path demo1_bulk.csv --input_st_data_path demo1_st_data.csv --input_st_meta_path demo1_st_meta.csv --BetaVAE_H --epoch 3000 --spot_data True
 ```
 
 else, if you choose the image-based in situ hybridization data (MERFISH, SeqFISH, or STARmap) as spatial reference, run the following command:
 ```
+cd bulk2space
 python bulk2space.py --project_name test2 --data_path example_data/demo2 --input_sc_meta_path demo2_sc_meta.csv --input_sc_data_path demo2_sc_data.csv --input_bulk_path demo2_bulk.csv --input_st_data_path demo2_st_data.csv --input_st_meta_path demo2_st_meta.csv --BetaVAE_H --epoch 3000 --spot_data False
 ```
 
