@@ -36,7 +36,7 @@ python setup.py install
 ```
 
 ## Quick Start
-To use Bulk2Space we require five formatted `.csv` files as input (i.e. read in by pandas). We have included twe test datasets 
+To use Bulk2Space we require five formatted `.csv` files as input (i.e. read in by pandas). We have included two test datasets 
 in the [tutorial/data/example_data folder](tutorial/data/example_data) of this repository as examples to show how to use Bulk2Space. 
 
 If you choose the spot-based data (10x Genomics, ST, or Slide-seq, etc) as spatial reference, please refer to:
