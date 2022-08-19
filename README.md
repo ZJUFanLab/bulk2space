@@ -26,7 +26,7 @@ pip install torch --extra-index-url https://download.pytorch.org/whl/cu116
 ```
 ### Install other requirements
 ```
-cd bulk2space-release
+cd bulk2space-main
 pip install -r requirements.txt
 ```
 ### Install Bulk2Space
