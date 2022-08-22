@@ -1,4 +1,4 @@
-# Bulk2Space 
+# Bulk2Space v1.0.0
 
 ## De novo analysis of bulk RNA-seq data at spatially resolved single-cell resolution 
 ### Jie Liao<sup>†</sup>,  Jingyang Qian<sup>†</sup>, Yin Fang<sup>†</sup>, Zhuo Chen<sup>†</sup>, Xiang Zhuang<sup>†</sup>, ..., Huajun Chen\*, Xiaohui Fan*
