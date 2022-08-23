@@ -70,7 +70,6 @@ class Bulk2Space:
                               input_st_meta_path,
                               vae_load_dir,  # load_dir
                               ratio_num=1,
-                              # marker_used,
                               top_marker_num=500,
                               generate_save_dir='output',  # file_dir
                               generate_save_name='generation',  # file_name
