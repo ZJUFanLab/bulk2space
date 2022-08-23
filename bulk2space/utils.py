@@ -32,8 +32,8 @@ def load_data(input_bulk_path,
     # load st_meta.csv and st_data.csv, containing coordinates and gene expression of each spot respectively.
     input_data["input_st_meta"] = pd.read_csv(input_st_meta_path, index_col=0)
     input_data["input_st_data"] = pd.read_csv(input_st_data_path, index_col=0)
-
     print("load data done!")
+    
     return input_data
 
 
