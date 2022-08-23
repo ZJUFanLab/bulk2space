@@ -61,7 +61,6 @@ class VAE(nn.Module):
 # bulk deconvolution
 class BulkDataset(Dataset):  
     def __init__(self, single_cell, label):
-        # 1. Initialize file path or list of file names.
         self.sc = single_cell
         self.label = label
 
@@ -72,7 +71,6 @@ class BulkDataset(Dataset):
         return (tmp_x, tmp_y_tag) 
 
     def __len__(self):
-        # You should change 0 to the total size of your dataset.
         return self.label.shape[0]
 
 
