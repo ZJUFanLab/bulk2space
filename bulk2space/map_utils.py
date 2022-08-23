@@ -310,7 +310,6 @@ class DFRunner:
         cell_list, spot_list, spot_len, df_spots = joint_predict(ratio)
         meta = {'Cell': cell_list, 'Spot': spot_list}
         df = pd.DataFrame(meta)
-        # pdb.set_trace()
         self.cell_type = self.cell_type.reset_index(drop=True)
         df_meta = pd.merge(df, self.cell_type, how='left')
         df_meta = df_meta[['Cell', 'Cell_type', 'Spot']]
@@ -359,7 +358,7 @@ class DFRunner:
 
         max_decade = len(single_cell_splitby_breed_np.keys())
         single_cell_matrix = []
-        #
+        
         for i in range(max_decade):
             single_cell_matrix.append(single_cell_splitby_breed_np[i].tolist())
 
