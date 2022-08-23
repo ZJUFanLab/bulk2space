@@ -8,9 +8,7 @@ from sklearn.neighbors import NearestNeighbors
 from scipy.linalg import solve
 from sklearn.neighbors import KDTree
 from scipy.optimize import nnls
-
 import os
-
 from collections import defaultdict
 
 
@@ -39,14 +37,6 @@ def create_st(generate_sc_data, generate_sc_meta, spot_num, cell_num, gene_num, 
             row = {'Cell': cell, 'Celltype': celltype, 'Spot': spot_name}
             meta = meta.append(row, ignore_index=True)
 
-    # if hvg_used:
-    #     adata = scanpy.AnnData(sc.T)
-    #     scanpy.pp.highly_variable_genes(adata, n_top_genes=gene_num)
-    #     sc = adata[:, adata.var.highly_variable]
-    #     sc = sc.to_df().T
-    #     gene_list = sc._stat_axis.values.tolist()
-    #     spots = spots.loc[gene_list, :]
-
     if marker_used:
         adata = scanpy.AnnData(sc.T)
 
@@ -59,12 +49,7 @@ def create_st(generate_sc_data, generate_sc_meta, spot_num, cell_num, gene_num, 
         marker = list(marker_array)
         sc = sc.loc[marker, :]
         spots = spots.loc[marker, :]
-
-    # file_path = 'data/step1/simulated'
-    # if not osp.exists(file_path):
-    #     os.makedirs(file_path)
-    # spots.to_csv(os.path.join(file_path, f'data_{dataset}_{dataname}_simulated_st.csv'))
-    # meta.to_csv(os.path.join(file_path, f'meta_{dataset}_{dataname}.csv'))
+        
     return sc, sc_ct, spots, meta
 
 
@@ -124,8 +109,6 @@ def create_sample(sc, st, meta, multiple):
 def get_data(pos, neg):
     X = np.vstack((pos, neg))
     y = np.concatenate((np.ones(pos.shape[0]), np.zeros(neg.shape[0])))
-    # X = torch.from_numpy(X).type(torch.FloatTensor)
-    # y = torch.from_numpy(y).type(torch.LongTensor)
 
     return X, y
 
@@ -142,6 +125,7 @@ def create_data(generate_sc_meta, generate_sc_data, st_data, spot_num, cell_num,
                                                   top_marker_num, marker_used)
     pos_train, neg_train = create_sample(sc_train, st_train, meta_train, mul_train)
     xtrain, ytrain = get_data(pos_train, neg_train)
+    
     return xtrain, ytrain
 
 
@@ -399,6 +383,7 @@ class DFRunner:
 
             for j in range(max_decade):
                 spot_ratio_values[i, j] = ratio_list[j]
+                
         return spot_ratio_values
 
     def _load_model(self, save_path):
@@ -414,12 +399,14 @@ class DFRunner:
 def aprior(gamma_hat, axis=None):
     m = np.mean(gamma_hat, axis=axis)
     s2 = np.var(gamma_hat, ddof=1, axis=axis)
+    
     return (2 * s2 + np.power(m, 2)) / s2
 
 
 def bprior(gamma_hat, axis=None):
     m = np.mean(gamma_hat, axis=axis)
     s2 = np.var(gamma_hat, ddof=1, axis=axis)
+    
     return (m * s2 + np.power(m, 3)) / s2
 
 
@@ -445,6 +432,7 @@ def it_sol(sdat, g_hat, d_hat, g_bar, t2, a, b, conv=0.0001):
         g_old = g_new
         d_old = d_new
         count += 1
+        
     return np.concatenate((np.expand_dims(g_new, axis=1), np.expand_dims(d_new, axis=1)), axis=1)
 
 def joint_analysis(dat, batch, mod=None, par_prior=True, proir_plots=False, mean_only=False, ref_batch=None):
@@ -517,11 +505,13 @@ def joint_analysis(dat, batch, mod=None, par_prior=True, proir_plots=False, mean
         dat_origin[keep_rows, :] = bayesdata
         bayesdata = pd.DataFrame(dat_origin, index=rownames, columns=colnames)
     bayesdata[bayesdata < 0] = 0
+    
     return bayesdata
 
 
 def knn(data, query, k):
     tree = KDTree(data)
     dist, ind = tree.query(query, k)
+    
     return dist, ind
 
