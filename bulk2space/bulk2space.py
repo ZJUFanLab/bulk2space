@@ -22,7 +22,6 @@ class Bulk2Space:
                                input_st_data_path,
                                input_st_meta_path,
                                ratio_num=1,
-                               # marker_used,
                                top_marker_num=500,
                                vae_save_dir='save_model',
                                vae_save_name='vae',
