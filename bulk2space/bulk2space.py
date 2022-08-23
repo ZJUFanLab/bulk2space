@@ -4,10 +4,8 @@ import numpy as np
 from .utils import load_data, data_process
 from .vae import train_vae, generate_vae, load_vae
 from .map_utils import create_data, DFRunner, joint_analysis, knn
-
 import os
 import warnings
-
 warnings.filterwarnings("ignore")
 
 
