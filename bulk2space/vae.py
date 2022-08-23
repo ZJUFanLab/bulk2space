@@ -44,10 +44,6 @@ class VAE(nn.Module):
 
     def forward(self, x, used_device):
         x = x.to(used_device)
-
-        # import pdb
-        # pdb.set_trace()
-
         encoder_output = self.encode(x)
         mu, sigma = torch.chunk(encoder_output, 2, dim=1)  # mu, log_var
         hidden = torch.randn_like(sigma) + mu * torch.exp(sigma) ** 0.5  # var => std
@@ -70,7 +66,6 @@ class BulkDataset(Dataset):
         self.label = label
 
     def __getitem__(self, idx):
-        # TODO
         tmp_x = self.sc[idx]
         tmp_y_tag = self.label[idx]
 
