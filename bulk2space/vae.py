@@ -41,7 +41,6 @@ class VAE(nn.Module):
     def decode(self, x):
         for i, layer in enumerate(self.decoder):
             x = self.decoder[i](x)
-            # if i != len(self.decoder) - 1:  # 考虑去除，防止负数出现
             x = F.relu(x)
         return x
 
@@ -66,7 +65,7 @@ class VAE(nn.Module):
 
 
 # bulk deconvolution
-class BulkDataset(Dataset):  # 需要继承data.Dataset
+class BulkDataset(Dataset):  
     def __init__(self, single_cell, label):
         # 1. Initialize file path or list of file names.
         self.sc = single_cell
@@ -89,8 +88,6 @@ def train_vae(single_cell, label, used_device, batch_size, feature_size, epoch_n
     feature_size = feature_size
     epoch_num = epoch_num
     lr = learning_rate
-    # random_seed = args.random_seed
-
     hidden_list = [2048, 1024, 512]
 
     mid_hidden_size = hidden_size
@@ -139,28 +136,16 @@ def train_vae(single_cell, label, used_device, batch_size, feature_size, epoch_n
             early_stop += 1
         pbar.set_description('Train Epoch: {}'.format(epoch))
         pbar.set_postfix(loss=f"{train_loss:.4f}", min_loss=f"{min_loss:.4f}")
-
-    # name = "BetaVAE"
-
-    # path_save = os.path.join(args.save, args.project_name, args.model_choice_vae,
-    #                          f"{args.project_name}_{name}_epoch_{epoch_final}_lr_{args.learning_rate}_loss_{train_loss:.2f}.pth")
-    # if not osp.exists(os.path.join(args.save, args.project_name, args.model_choice_vae)):
-    #     os.makedirs(os.path.join(args.save, args.project_name, args.model_choice_vae))
-    # torch.save(best_vae.state_dict(), path_save)
-    # writer.close()
     print(f"min loss = {min_loss}")
+    
     return best_vae
 
 
 def load_vae(feature_size, hidden_size, path, used_device):
-    # else:
-    #     load_path = cfg.load_path_vae
-
     hidden_list = [2048, 1024, 512]
-
     vae = VAE(feature_size, hidden_list, hidden_size).to(used_device)
-
     vae.load_state_dict(torch.load(path, map_location=used_device))
+    
     return vae
 
 
@@ -180,7 +165,7 @@ def generate_vae(net, ratio, single_cell, label, breed_2_list, index_2_gene, cel
         all_to_generate += x
 
     if cell_number_target_num != None:
-        epochs = 10000  # 10000次
+        epochs = 10000 
         ratio = 1
     else:
         epochs = 1
@@ -207,7 +192,6 @@ def generate_vae(net, ratio, single_cell, label, breed_2_list, index_2_gene, cel
                     assert all_to_generate == 0 and len(key_list) == 0
                     break
 
-                # 随机打乱
                 import random
                 random.shuffle(key_list)
 
@@ -220,13 +204,10 @@ def generate_vae(net, ratio, single_cell, label, breed_2_list, index_2_gene, cel
                 for batch_idx, data in enumerate(dataloader):  # 一个batch
                     cell_feature_batch, label_batch = data
                     cell_feature_batch = cell_feature_batch.to(used_device)
-                    # pbar.set_description('Generating Epoch: {}'.format(epoch))
-                    ##############
 
-                    # pbar.set_postfix(remain_to_generate=fmt(all_to_generate))
                     label_batch = label_batch.cpu().numpy()
 
-                    for j in range(ratio):  # 翻倍多少
+                    for j in range(ratio): 
                         ans_l, _ = net(cell_feature_batch, used_device)
                         ans_l = ans_l.cpu().data.numpy()
                         # for i in range(ans_l.shape[0]):
@@ -237,10 +218,8 @@ def generate_vae(net, ratio, single_cell, label, breed_2_list, index_2_gene, cel
                 pbar.update(generate_num)
 
     print("generated done!")
-    # print("begin data to spatial mapping...")
     generate_sc_meta, generate_sc_data = prepare_data(cell_all_generate, label_all_generate, breed_2_list,
                                                       index_2_gene)
-    # print("Data have been prepared...")
     return generate_sc_meta, generate_sc_data
 
 
