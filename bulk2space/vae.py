@@ -69,7 +69,7 @@ class BulkDataset(Dataset):
         tmp_x = self.sc[idx]
         tmp_y_tag = self.label[idx]
 
-        return (tmp_x, tmp_y_tag)  # tag 分类
+        return (tmp_x, tmp_y_tag) 
 
     def __len__(self):
         # You should change 0 to the total size of your dataset.
