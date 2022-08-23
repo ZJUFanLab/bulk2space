@@ -91,12 +91,10 @@ def train_vae(single_cell, label, used_device, batch_size, feature_size, epoch_n
     beta = 4
     beta1 = 0.9
     beta2 = 0.999
-    # vae = BetaVAE_H(feature_size, hidden_list, mid_hidden_size).cuda()
     vae = VAE(feature_size, hidden_list, mid_hidden_size).to(used_device)
     optimizer = AdamW(vae.parameters(), lr=lr, weight_decay=weight_decay, betas=(beta1, beta2))
 
     pbar = tqdm(range(epoch_num))
-    # writer = SummaryWriter()
     min_loss = 1000000000000000
     vae.train()
     early_stop = 0
@@ -117,11 +115,9 @@ def train_vae(single_cell, label, used_device, batch_size, feature_size, epoch_n
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
-            # writer.add_scalar('loss', loss.item(), epoch)
 
         if train_loss < min_loss:
             min_loss = train_loss
-            # pbar.write("Epoch {}, min loss update to: {:.4f}".format(epoch, train_loss))
             best_vae = copy.deepcopy(vae)
             early_stop = 0
             epoch_final = epoch
@@ -194,7 +190,7 @@ def generate_vae(net, ratio, single_cell, label, breed_2_list, index_2_gene, cel
                 dataloader = DataLoader(BulkDataset(single_cell=cell_feature, label=label), batch_size=300,
                                         shuffle=False,
                                         pin_memory=True, num_workers=0)
-                for batch_idx, data in enumerate(dataloader):  # 一个batch
+                for batch_idx, data in enumerate(dataloader):  
                     cell_feature_batch, label_batch = data
                     cell_feature_batch = cell_feature_batch.to(used_device)
 
@@ -203,7 +199,6 @@ def generate_vae(net, ratio, single_cell, label, breed_2_list, index_2_gene, cel
                     for j in range(ratio): 
                         ans_l, _ = net(cell_feature_batch, used_device)
                         ans_l = ans_l.cpu().data.numpy()
-                        # for i in range(ans_l.shape[0]):
                         cell_all_generate.extend(ans_l)
                         label_all_generate.extend(label_batch)
 
