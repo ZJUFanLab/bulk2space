@@ -3,7 +3,7 @@
 ## De novo analysis of bulk RNA-seq data at spatially resolved single-cell resolution 
 ### Jie Liao<sup>†</sup>,  Jingyang Qian<sup>†</sup>, Yin Fang<sup>†</sup>, Zhuo Chen<sup>†</sup>, Xiang Zhuang<sup>†</sup>, ..., Huajun Chen\*, Xiaohui Fan*
 
-[![python 3.8](https://img.shields.io/badge/python-3.8-brightgreen)](https://www.python.org/) [![DOI](https://zenodo.org/badge/443247846.svg)](https://zenodo.org/badge/latestdoi/443247846)
+[![python 3.8](https://img.shields.io/badge/python-3.8-brightgreen)](https://www.python.org/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7134575.svg)](https://doi.org/10.5281/zenodo.7134575)
 
 Bulk2Space is a two-step spatial deconvolution method based on deep learning frameworks, which converts bulk transcriptomes into spatially resolved single-cell expression profiles.
 
