@@ -3,7 +3,7 @@
 ## De novo analysis of bulk RNA-seq data at spatially resolved single-cell resolution 
 ### Jie Liao<sup>†</sup>,  Jingyang Qian<sup>†</sup>, Yin Fang<sup>†</sup>, Zhuo Chen<sup>†</sup>, Xiang Zhuang<sup>†</sup>, ..., Huajun Chen\*, Xiaohui Fan*
 
-[![python 3.8](https://img.shields.io/badge/python-3.8-brightgreen)](https://www.python.org/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7134575.svg)](https://doi.org/10.5281/zenodo.7134575)
+[![python 3.8](https://img.shields.io/badge/python-3.8-brightgreen)](https://www.python.org/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7134575.svg)](https://doi.org/10.5281/zenodo.7134575) [![DOI](https://img.shields.io/badge/DOI-10.1038%2Fs41467--022--34271--z-yellowgreen](https://www.nature.com/articles/s41467-022-34271-z)
 
 Bulk2Space is a two-step spatial deconvolution method based on deep learning frameworks, which converts bulk transcriptomes into spatially resolved single-cell expression profiles.
 
@@ -58,3 +58,7 @@ Additional step-by-step tutorials now available! Preprocessed datasets used can 
 
 ## About
 Should you have any questions, please feel free to contact the co-first authors of the manuscript, Dr. Jie Liao (liaojie@zju.edu.cn), Mr. Jingyang Qian (qianjingyang@zju.edu.cn), Miss Yin Fang (fangyin@zju.edu.cn), Mr. Zhuo Chen (zhuo.chen@zju.edu.cn), or Mr. Xiang Zhuang (zhuangxiang@zju.edu.cn).
+
+## References
+Liao, J., Qian, J., Fang, Y. et al. De novo analysis of bulk RNA-seq data at spatially resolved single-cell resolution. Nat Commun 13, 6498 (2022). [https://doi.org/10.1038/s41467-022-34271-z](https://doi.org/10.1038/s41467-022-34271-z)
+
