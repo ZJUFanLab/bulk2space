@@ -54,7 +54,7 @@ class VAE(nn.Module):
     def get_hidden(self, x):
         encoder_output = self.encode(x)
         mu, sigma = torch.chunk(encoder_output, 2, dim=1)  # mu, log_var
-        hidden = torch.randn_like(sigma) + mu * torch.exp(sigma) ** 0.5  # var => std
+        hidden = torch.randn_like(sigma) * torch.exp(sigma) ** 0.5 + mu  # var => std
         return hidden
 
 
